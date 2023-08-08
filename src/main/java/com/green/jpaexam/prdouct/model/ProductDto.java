@@ -11,5 +11,4 @@ public class ProductDto {
     private final String name;
     private final int price;
     private final int stock;
-    private final LocalDateTime createdAt;
 }

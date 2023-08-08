@@ -1,11 +1,13 @@
 package com.green.jpaexam.prdouct.model;
 
+import com.green.jpaexam.config.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+
 
 @Data
 @Table(name = "t_product")
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductEntity {
+public class ProductEntity extends BaseEntity {
 
     @Id // pk값임
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
@@ -28,9 +30,9 @@ public class ProductEntity {
 
     @Column(nullable = false)
     private Integer stock;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+//
+//    @CreationTimestamp
+//    private LocalDateTime createdAt;
 
 
 }

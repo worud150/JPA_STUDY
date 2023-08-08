@@ -5,6 +5,9 @@ import com.green.jpaexam.prdouct.model.ProductEntity;
 import com.green.jpaexam.prdouct.model.ProductRes;
 import com.green.jpaexam.prdouct.model.ProductUpdDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -29,20 +32,21 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override // select
-    public List<ProductRes> getProductAll() {
-        List<ProductEntity> list = rep.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-        List<ProductRes> result = list.stream().map(item -> ProductRes
-                .builder()
-                .number(item.getNumber())
-                .name(item.getName())
-                .price(item.getPrice())
-                .stock(item.getStock())
-                .createdAt(item.getCreatedAt())
-                .build()
-        ).toList();
+    public Page<ProductRes> getProductAll(Pageable page) {
+        Page<ProductEntity> totalList = rep.findAll(page);
+        long totalSize = totalList.getTotalElements();
 
-        return result;
+        List<ProductRes> list = totalList.getContent().stream().map(item ->
+                        ProductRes.builder()
+                        .number(item.getNumber())
+                        .name(item.getName())
+                        .price(item.getPrice())
+                        .stock(item.getStock())
+                        .build()
+                ).toList();
+        return new PageImpl<>(list, page, totalSize);
     }
+
 
     @Override // select ById
     public ProductRes getProduct(Long number) {

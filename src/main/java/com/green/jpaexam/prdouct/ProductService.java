@@ -5,8 +5,11 @@ import com.green.jpaexam.prdouct.model.ProductEntity;
 import com.green.jpaexam.prdouct.model.ProductRes;
 import com.green.jpaexam.prdouct.model.ProductUpdDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +23,12 @@ public class ProductService {
                 .name(dto.getName())
                 .price(dto.getPrice())
                 .stock(dto.getStock())
-                .createdAt(dto.getCreatedAt())
                 .build();
         return dao.saveProduct(entity);
     }
 
-    public List<ProductRes> getProductAll () {
-        return dao.getProductAll();
+    public Page<ProductRes> getProductAll (Pageable page) {
+        return dao.getProductAll(page);
     }
 
     public ProductRes getProduct (Long number) {
@@ -41,6 +43,7 @@ public class ProductService {
                 .price(dto.getPrice())
                 .build();
 
+        entity.setCreatedAt(LocalDateTime.now());
         return dao.updProduct(entity);
     }
 
